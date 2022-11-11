@@ -2,9 +2,10 @@ package com.CIMS.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.CIMS.Exceptions.UserException;
+import com.CIMS.Exception.UserException;
 import com.CIMS.Model.User;
 import com.CIMS.utility.CIMS;
 
@@ -37,8 +38,55 @@ public class UserImp implements UserDAO {
 
 	@Override
 	public User UserLogIn(String username, String password) throws UserException {
-		// TODO Auto-generated method stub
-		return null;
+
+		User user=null;
+		
+		try (Connection conn= CIMS.provideConnection()){
+			
+			
+			PreparedStatement ps= conn.prepareStatement("select * from User where username=? AND password = ?");
+			
+			
+			ps.setString(1, username);
+			ps.setString(2, password);
+			
+			ResultSet rs= ps.executeQuery();
+			
+			if(rs.next())
+			{
+				int i= rs.getInt("userID");
+				String n= rs.getString("name");
+				String un= rs.getString("UserName");
+				String p= rs.getString("password");
+				String a= rs.getString("Address");
+				int pi=rs.getInt("Pincode");
+				int pn=rs.getInt("PhoneNumber");
+				
+				String e= rs.getString("Email");
+				
+				
+				user= new User(i,n,un,p,a,pi,pn,e);
+				
+			}else
+				throw new UserException("Invalid Username or password..");
+			
+			
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new UserException(e.getMessage());
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		return user;
 	}
 
 }

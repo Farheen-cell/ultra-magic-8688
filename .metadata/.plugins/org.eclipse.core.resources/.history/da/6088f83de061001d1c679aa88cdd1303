@@ -1,0 +1,9 @@
+package com.CIMS.DAO;
+
+import com.CIMS.Exception.AdminException;
+
+
+public interface AdminDAO throws AdminException{
+	public String registerAdmin(Admmin admin)throws AdminException;
+	public Admin AdminLogIn(String username,String password)throws AdminException;
+}

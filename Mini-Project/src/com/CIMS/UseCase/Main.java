@@ -2,9 +2,13 @@ package com.CIMS.UseCase;
 
 import java.util.Scanner;
 
+import com.CIMS.DAO.AdminDAO;
+import com.CIMS.DAO.AdminImp;
 import com.CIMS.DAO.UserDAO;
 import com.CIMS.DAO.UserImp;
-import com.CIMS.Exceptions.UserException;
+import com.CIMS.Exception.AdminException;
+import com.CIMS.Exception.UserException;
+import com.CIMS.Model.Admin;
 import com.CIMS.Model.User;
 
 public class Main {
@@ -20,6 +24,7 @@ public class Main {
 		System.out.println("2:-LogIn Your Account");
 		int op=sc.nextInt();
 		UserDAO udao=new UserImp();
+		AdminDAO adao=new AdminImp();
 		if(op==1) {
 			System.out.println("Select any one opption given below");
 			System.out.println("1:-As User");
@@ -37,7 +42,7 @@ public class Main {
 				System.out.println("Enter your Pincode");
 				int pincode=sc.nextInt();
 				System.out.println("Enter your Phone Number");
-				int PhoneNummber=sc.nextInt();
+				int PhoneNumber=sc.nextInt();
 				System.out.println("Enter your Email");
 				String email=sc.next();
 				User user=new User();
@@ -45,8 +50,8 @@ public class Main {
 				user.setUserName(userName);
 				user.setPassword(password);
 				user.setAddress(Address);
-				user.setAddress(Address);
 				user.setPincode(pincode);
+				user.setPhoneNumber(PhoneNumber);
 				user.setEmail(email);
 				try {
 					String result=udao.registerUser(user);
@@ -63,15 +68,55 @@ public class Main {
 					System.out.println("Enter Employee code given in mail");
 					int AdminCode=sc.nextInt();
 					if(AdminCode==101093) {
+						System.out.println("Enter your username");
+						String username=sc.next();
+						System.out.println("Enter your password");
+						String password=sc.next();
+						System.out.println("Enter your name");
+						String name=sc.next();
+						System.out.println("Enter your Designation");
+						String designation=sc.next();
+						System.out.println("Enter your OfficialAddress");
+						String OfficialAddress=sc.next();
+						System.out.println("Enter your OfficalPhone");
+						int OfficalPhone=sc.nextInt();
+						System.out.println("Enter your ResidentialAddress");
+						String ResidentialAddress=sc.next();
+						System.out.println("Enter your Pincode");
+						int Pincode=sc.nextInt();
+						System.out.println("Enter your Phone");
+						int Phone=sc.nextInt();
+						System.out.println("Enter your Email");
+						String email=sc.next();
+						Admin admin=new Admin();
+						admin.setUsername(username);
+						admin.setPassword(password);
+						admin.setName(name);
+						admin.setDesignation(designation);
+						admin.setOfficialAddress(OfficialAddress);
+						admin.setOfficalPhone(OfficalPhone);
+						admin.setResidentialAddress(ResidentialAddress);
+						admin.setPhone(Phone);
+						admin.setPincode(Pincode);
+						admin.setEmail(email);
+						try {
+							String result=adao.registerAdmin(admin);
+							System.out.println(result);
+							
+							
+						} catch (AdminException e) {
+							// TODO: handle exception
+						}
+						
+						
+						
 						
 						
 					}else {
 						System.out.println("Admin code does not match");
 						flag=false;
+						
 					}
-				}else {
-					System.out.println("Plese select right opption");
-					flag=false;
 				}
 		}else
 			if(op==2) {
@@ -84,8 +129,15 @@ public class Main {
 					String UN=sc.next();
 					System.out.println("Enter Your Password");
 					String PW=sc.next();
-					
-					//login method call for user
+					try {
+					 	User user= udao.UserLogIn(UN, PW);
+						
+					 	System.out.println("Welcome "+user.getName());
+					 
+						}catch (UserException e) {
+							System.out.println(e.getMessage());
+						}
+											//login method call for user
 				}else
 					if(role==2) {
 						System.out.println("Enter Your UsearName");
@@ -93,7 +145,18 @@ public class Main {
 						System.out.println("Enter Your Password");
 						String PW=sc.next();
 						//login method call for Admin
+						try {
+						 	Admin admin= adao.AdminLogIn(UN, PW);
+							
+						 	System.out.println("Welcome "+admin.getName());
+						 
+							}catch (AdminException e) {
+								System.out.println(e.getMessage());
+							}
 					}
+			}else {
+				System.out.println("enter right opption");
+				flag=false;
 			}
 		}
 
