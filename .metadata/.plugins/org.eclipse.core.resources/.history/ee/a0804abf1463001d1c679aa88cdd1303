@@ -1,0 +1,257 @@
+package com.CIMS.DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.CIMS.Exception.AdminException;
+import com.CIMS.Exception.UserException;
+import com.CIMS.Model.Admin;
+import com.CIMS.Model.CrimeReport;
+import com.CIMS.Model.Criminal;
+import com.CIMS.Model.FIR;
+import com.CIMS.Model.Feedback;
+import com.CIMS.Model.User;
+import com.CIMS.utility.CIMS;
+
+public class AdminImp implements AdminDAO{
+
+	@Override
+	public String registerAdmin(Admin admin) throws AdminException {
+		String result = "Not inserted...";
+		try (Connection conn = CIMS.provideConnection()) {
+			PreparedStatement ps = conn.prepareStatement(
+					"insert into admin(username,password,name,designation,officialAddress,officalPhone,residentialAddress,pincode,phone,email) values(?,?,?,?,?,?,?,?,?,?)");
+			ps.setString(1, admin.getUsername());
+			ps.setString(2, admin.getPassword());
+			ps.setString(3, admin.getName());
+			ps.setString(4, admin.getDesignation());
+			ps.setString(5, admin.getOfficialAddress());
+			ps.setString(6, admin.getOfficalPhone());
+			ps.setString(7, admin.getResidentialAddress());
+			ps.setInt(8, admin.getPincode());
+			ps.setString(9, admin.getPhone());
+			ps.setString(10, admin.getEmail());
+			int x = ps.executeUpdate();
+			if (x > 0) {
+				result = " Registered Sucessfully..";
+			}
+
+		} catch (SQLException e) {
+			// TODO: handle exception
+		}
+
+		return result;
+	}
+
+	@Override
+	public Admin AdminLogIn(String username, String password) throws AdminException {
+Admin admin=null;
+		
+		try (Connection conn= CIMS.provideConnection()){
+			
+			
+			PreparedStatement ps= conn.prepareStatement("select * from admin where username=? AND password = ?");
+			
+			
+			ps.setString(1, username);
+			ps.setString(2, password);
+			
+			ResultSet rs= ps.executeQuery();
+			
+			if(rs.next())
+			{
+				int i= rs.getInt("userId");
+				String un= rs.getString("UserName");
+				String p= rs.getString("password");
+				String n= rs.getString("name");
+				String d= rs.getString("Designation");
+				String oa= rs.getString("OfficialAddress");
+				String op=rs.getString("OfficalPhone");
+				String ra= rs.getString("ResidentialAddress");
+				int pi=rs.getInt("Pincode");
+				String pn=rs.getString("Phone");
+				String e= rs.getString("Email");
+			admin= new Admin(i,un,p,n,d,oa,op,ra,pi,pn,e);
+				
+			}else
+				throw new AdminException("Invalid Username or password..");
+		
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new AdminException(e.getMessage());
+		}
+		
+		
+		return admin;
+	}
+
+	@Override
+	public CrimeReport ViewComplanes(int complaneNo) throws AdminException {
+		CrimeReport cr= null;
+		
+		try(Connection conn= CIMS.provideConnection()) {
+			
+			
+			PreparedStatement ps = conn.prepareStatement("select * from CrimeReport where CrimeNo= ?");
+			
+			ps.setInt(1, complaneNo);
+			
+			ResultSet rs= ps.executeQuery();
+			
+			if(rs.next()) {
+				
+				int cn= rs.getInt("crimeNo");
+			int ui= rs.getInt("UserId");
+				String ni= rs.getString("NameOfInforment");
+				String de=rs.getString("Detailsofsuspect");
+				String dc= rs.getString("Description");
+				String d= rs.getString("Date");
+				String s= rs.getString("status");
+				
+				
+				cr = new CrimeReport(cn,ui,ni,de,dc,d,s);
+				
+				
+			}else
+				throw new AdminException("Crime report does not exist with CrimeNo :"+complaneNo);
+		
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new AdminException(e.getMessage());
+		}
+		
+		return cr;
+	}
+	@Override
+	public String PasswordChange(int AdminID, String password) throws AdminException {
+		String result = "Not changed.....";
+		try (Connection conn = CIMS.provideConnection()) {
+			PreparedStatement ps = conn.prepareStatement("update Admin set password=? where userId=?;");
+			ps.setString(1, password);
+			ps.setInt(2, AdminID);
+
+			int x = ps.executeUpdate();
+			if (x > 0) {
+				result = "Edit Passwerd Sucessfully..";
+			} else
+				throw new AdminException("Invalid userId..");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new AdminException(e.getMessage());
+		}
+		return result;
+	}
+
+	
+
+
+	@Override
+	public List<Feedback> ViewUserFeedback() throws AdminException {
+List<Feedback> fd = new ArrayList<>();
+		
+		
+		try(Connection conn = CIMS.provideConnection()) {
+			
+			
+			PreparedStatement ps= conn.prepareStatement("select * from Feeadback");
+			
+			
+			ResultSet rs= ps.executeQuery();
+			
+			
+			while(rs.next()) {
+				
+				
+				String r= rs.getString("name");
+				String n= rs.getString("Email");
+				String m= rs.getString("message");
+				
+				
+				Feedback feedback = new Feedback(r, n, m);
+				
+				fd.add(feedback);
+			
+				
+			}
+			
+			
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			//exception rethrowing
+			throw new AdminException(e.getMessage());
+		}
+		
+		
+		if(fd.size() == 0)
+			throw new AdminException("No Student found...");
+		
+		return fd;
+	}
+
+	@Override
+	public String DeletFeedback(String Name) throws AdminException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String AddFIR(FIR fir) throws AdminException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public FIR ViewFIR(String date) throws AdminException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String DeleteFIR(int firNo) throws AdminException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String AddCriminals(Criminal criminal) throws AdminException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String deleteCriminals(String name) throws AdminException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String EditComplaneStatust(int complaneNo, String status) throws AdminException {
+		String result="Not updated....";
+		try (Connection conn = CIMS.provideConnection()) {
+			PreparedStatement ps = conn.prepareStatement("update CrimeReport set Status=? where CrimeNo=?;");
+			ps.setString(1, status);
+			ps.setInt(2, complaneNo);
+
+			int x = ps.executeUpdate();
+			if (x > 0) {
+				result = "Edit Passwerd Sucessfully..";
+			} else
+				throw new AdminException("Invalid complaneNo..");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new AdminException(e.getMessage());
+		}
+		return result;
+	}
+
+	
+
+}

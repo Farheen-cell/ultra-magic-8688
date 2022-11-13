@@ -1,0 +1,30 @@
+package com.CIMS.UseCase;
+
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println("Welcome to CIMS");
+		boolean flag=true;
+		while(flag==true) {
+			Scanner sc=new Scanner(System.in);
+		System.out.println("Select any one opption given below");
+		System.out.println("1:-Register You Self");
+		System.out.println("2:-LogIn Your Account");
+		int op=sc.nextInt();
+		if(op==1) {
+			System.out.println("Select any one opption given below");
+			System.out.println("1:-As User");
+			System.out.println("2:-As Admin");
+			int op1=sc.nextInt();
+			if(op1==1) {
+				
+			}
+		}
+		}
+
+	}
+
+}

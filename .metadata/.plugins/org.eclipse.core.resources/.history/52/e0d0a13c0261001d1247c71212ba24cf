@@ -1,0 +1,14 @@
+package com.CIMS.DAO;
+
+import com.CIMS.Exceptions.UserException;
+import com.CIMS.Model.User;
+
+public class UserImp implements UserDAO {
+
+	@Override
+	public String registerUser(User user) throws UserException {
+	String result="Not inserted";
+	return result;
+	}
+
+}

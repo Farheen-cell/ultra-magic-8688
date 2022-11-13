@@ -1,0 +1,20 @@
+package com.CIMS.DAO;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import com.CIMS.Exceptions.UserExceptions;
+import com.CIMS.Model.User;
+import com.CIMS.utility.CIMS;
+
+public class userImp implements UserDAO {
+
+	@Override
+	public String registerUser(User user)  {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+}

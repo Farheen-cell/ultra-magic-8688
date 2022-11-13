@@ -1,0 +1,5 @@
+package com.CIMS.Model;
+
+public class CrimeReport {
+
+}
