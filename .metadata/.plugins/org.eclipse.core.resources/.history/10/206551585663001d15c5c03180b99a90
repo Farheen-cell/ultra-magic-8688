@@ -512,7 +512,7 @@ public class Main {
 				}
 			} else {
 				System.out.println("enter right opption");
-				
+				flag = false;
 			}
 }
 		sc.close();

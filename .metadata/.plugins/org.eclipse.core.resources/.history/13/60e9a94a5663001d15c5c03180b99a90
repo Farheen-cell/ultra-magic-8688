@@ -142,8 +142,6 @@ public class Main {
 
 						System.out.println("Welcome " + user.getName());
 						System.out.println("Your User code is " + user.getUserID());
-						boolean uflag=true;
-						while(uflag==true) {
 						System.out.println("Select one opption from given below");
 						System.out.println("1:-Add Complaint(FIR) Report");
 
@@ -276,14 +274,13 @@ public class Main {
 			// *****************************************************************logOut***************************************************************************
 						if (op3 == 8) {
 						System.out.println("Logout done");
-						uflag=false;
-						break;
+						flag=true;
 						
 						}
 					
 						
 
-					} }catch (UserException e) {
+					} catch (UserException e) {
 						System.out.println(e.getMessage());
 					}
 				} else if (role == 2) {
@@ -512,7 +509,7 @@ public class Main {
 				}
 			} else {
 				System.out.println("enter right opption");
-				
+				flag = false;
 			}
 }
 		sc.close();
