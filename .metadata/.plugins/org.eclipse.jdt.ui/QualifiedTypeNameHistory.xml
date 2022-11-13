@@ -5,7 +5,6 @@
     <fullyQualifiedTypeName name="java.lang.Exception"/>
     <fullyQualifiedTypeName name="com.CIMS.Exceptions.UserExceptions"/>
     <fullyQualifiedTypeName name="com.mysql.cj.xdevapi.PreparableStatement"/>
-    <fullyQualifiedTypeName name="java.sql.SQLException"/>
     <fullyQualifiedTypeName name="java.sql.Connection"/>
     <fullyQualifiedTypeName name="com.CIMS.utility.CIMS"/>
     <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
@@ -13,4 +12,17 @@
     <fullyQualifiedTypeName name="com.CIMS.DAO.UserImp"/>
     <fullyQualifiedTypeName name="com.CIMS.Exceptions.UserException"/>
     <fullyQualifiedTypeName name="com.CIMS.Model.User"/>
+    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
+    <fullyQualifiedTypeName name="com.CIMS.Model.Admin"/>
+    <fullyQualifiedTypeName name="com.CIMS.DAO.AdminDAO"/>
+    <fullyQualifiedTypeName name="com.CIMS.DAO.AdminImp"/>
+    <fullyQualifiedTypeName name="com.CIMS.Model.CrimeReport"/>
+    <fullyQualifiedTypeName name="com.CIMS.Exception.AdminException"/>
+    <fullyQualifiedTypeName name="com.CIMS.Exception.UserException"/>
+    <fullyQualifiedTypeName name="com.CIMS.Model.FIR"/>
+    <fullyQualifiedTypeName name="com.CIMS.Model.Criminal"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="java.sql.SQLException"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="com.CIMS.Model.Feedback"/>
 </qualifiedTypeNameHistroy>

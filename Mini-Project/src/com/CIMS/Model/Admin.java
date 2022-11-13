@@ -7,10 +7,10 @@ public class Admin {
 	private String name;
 	private String Designation;
 	private String OfficialAddress;
-	private int OfficalPhone;
+	private String OfficalPhone;
 	private String ResidentialAddress;
 	private int Pincode;
-	private int Phone;
+	private String Phone;
 	private String Email;
 	public int getAdminID() {
 		return AdminID;
@@ -48,10 +48,10 @@ public class Admin {
 	public void setOfficialAddress(String officialAddress) {
 		OfficialAddress = officialAddress;
 	}
-	public int getOfficalPhone() {
+	public String getOfficalPhone() {
 		return OfficalPhone;
 	}
-	public void setOfficalPhone(int officalPhone) {
+	public void setOfficalPhone(String officalPhone) {
 		OfficalPhone = officalPhone;
 	}
 	public String getResidentialAddress() {
@@ -66,10 +66,10 @@ public class Admin {
 	public void setPincode(int pincode) {
 		Pincode = pincode;
 	}
-	public int getPhone() {
+	public String getPhone() {
 		return Phone;
 	}
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		Phone = phone;
 	}
 	public String getEmail() {
@@ -89,7 +89,7 @@ public class Admin {
 		super();
 	}
 	public Admin(int adminID, String username, String password, String name, String designation, String officialAddress,
-			int officalPhone, String residentialAddress, int pincode, int phone, String email) {
+			String officalPhone, String residentialAddress, int pincode, String phone, String email) {
 		super();
 		AdminID = adminID;
 		this.username = username;

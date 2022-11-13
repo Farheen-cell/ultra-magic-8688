@@ -1,0 +1,527 @@
+package com.CIMS.UseCase;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Scanner;
+
+import com.CIMS.DAO.AdminDAO;
+import com.CIMS.DAO.AdminImp;
+import com.CIMS.DAO.UserDAO;
+import com.CIMS.DAO.UserImp;
+import com.CIMS.Exception.AdminException;
+import com.CIMS.Exception.UserException;
+import com.CIMS.Model.Admin;
+import com.CIMS.Model.CrimeReport;
+import com.CIMS.Model.Criminal;
+import com.CIMS.Model.FIR;
+import com.CIMS.Model.Feedback;
+import com.CIMS.Model.User;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+//*****************************************************Welcome part******************************************************		
+
+		System.out.println("Welcome to CIMS");
+		Scanner sc = new Scanner(System.in);
+		boolean flag = true;
+		boolean flaguser = false;
+		boolean flagAdmin = false;
+		boolean flagend=false;
+		while (flag == true) {
+//******************************************register part for both user and admin********************************************			
+			System.out.println("Select any one opption given below");
+			System.out.println("1:-Register You Self");
+			System.out.println("2:-LogIn Your Account");
+			int op = sc.nextInt();
+			UserDAO udao = new UserImp();
+			AdminDAO adao = new AdminImp();
+			if (op == 1) {
+				System.out.println("Select any one opption given below");
+				System.out.println("1:-As User");
+				System.out.println("2:-As Admin");
+				int op1 = sc.nextInt();
+				if (op1 == 1) {
+//************************************************User registration part************************************************				
+
+					System.out.println("Enter your name");
+					String name = sc.next();
+					System.out.println("Enter your UserName");
+					String userName = sc.next();
+					System.out.println("Enter your Password");
+					String password = sc.next();
+					System.out.println("Enter your Address");
+					String Address = sc.next();
+					System.out.println("Enter your Pincode");
+					int pincode = sc.nextInt();
+					System.out.println("Enter your Phone Number");
+					int PhoneNumber = sc.nextInt();
+					System.out.println("Enter your Email");
+					String email = sc.next();
+					User user = new User();
+					user.setName(name);
+					user.setUserName(userName);
+					user.setPassword(password);
+					user.setAddress(Address);
+					user.setPincode(pincode);
+					user.setPhoneNumber(PhoneNumber);
+					user.setEmail(email);
+					try {
+						String result = udao.registerUser(user);
+						System.out.println(result);
+
+					} catch (UserException e) {
+						// TODO: handle the exception
+						System.out.println(e.getMessage());
+					}
+
+				} else if (op1 == 2) {
+//******************************************************Admin registration part**********************************************************			
+					System.out.println("Enter Employee code given in mail");
+					int AdminCode = sc.nextInt();
+					if (AdminCode == 101093) {
+						System.out.println("Enter your username");
+						String username = sc.next();
+						System.out.println("Enter your password");
+						String password = sc.next();
+						System.out.println("Enter your name");
+						String name = sc.next();
+						System.out.println("Enter your Designation");
+						String designation = sc.next();
+						System.out.println("Enter your OfficialAddress");
+						String OfficialAddress = sc.next();
+						System.out.println("Enter your OfficalPhone");
+						String OfficalPhone = sc.next();
+						System.out.println("Enter your ResidentialAddress");
+						String ResidentialAddress = sc.next();
+						System.out.println("Enter your Pincode");
+						int Pincode = sc.nextInt();
+						System.out.println("Enter your Phone");
+						String Phone = sc.next();
+						System.out.println("Enter your Email");
+						String email = sc.next();
+						Admin admin = new Admin();
+						admin.setUsername(username);
+						admin.setPassword(password);
+						admin.setName(name);
+						admin.setDesignation(designation);
+						admin.setOfficialAddress(OfficialAddress);
+						admin.setOfficalPhone(OfficalPhone);
+						admin.setResidentialAddress(ResidentialAddress);
+						admin.setPhone(Phone);
+						admin.setPincode(Pincode);
+						admin.setEmail(email);
+						try {
+							String result = adao.registerAdmin(admin);
+							System.out.println(result);
+
+						} catch (AdminException e) {
+							// TODO: hanthe dle exception
+							System.out.println(e.getMessage());
+						}
+
+					} else {
+						System.out.println("Admin code does not match");
+
+					}
+				}
+			} else
+
+// ******************************************************login part********************************************************
+			if (op == 2) {
+				System.out.println("Select your role");
+				System.out.println("1:-User");
+				System.out.println("2:-Admin");
+				int role = sc.nextInt();
+				if (role == 1) {
+					System.out.println("Enter Your UsearName");
+					String UN = sc.next();
+					System.out.println("Enter Your Password");
+					String PW = sc.next();
+					try {
+						User user = udao.UserLogIn(UN, PW);
+
+						System.out.println("Welcome " + user.getName());
+						System.out.println("Your User code is " + user.getUserID());
+						flaguser = true;
+						flag = false;
+
+					} catch (UserException e) {
+						System.out.println(e.getMessage());
+					}
+				} else if (role == 2) {
+					System.out.println("Enter Your UsearName");
+					String UN = sc.next();
+					System.out.println("Enter Your Password");
+					String PW = sc.next();
+//*****************************************************login method call for Admin**********************************************
+					try {
+						Admin admin = adao.AdminLogIn(UN, PW);
+
+						System.out.println("Welcome " + admin.getName());
+						System.out.println("Your User code is " + admin.getAdminID());
+						flagAdmin = true;
+						flag = false;
+
+					} catch (AdminException e) {
+						System.out.println(e.getMessage());
+					}
+				}
+			} else {
+				System.out.println("enter right opption");
+				flag = false;
+			}
+		}
+//***********************************************************************************User work part*****************************************************************************************************		
+		while (flaguser = true) {
+
+			System.out.println("Select one opption from given below");
+			System.out.println("1:-Add Complaint(FIR) Report");
+
+			System.out.println("2:-Edit Complaint");
+			System.out.println("3:-Edit Account");
+			System.out.println("4:-View complaint status");
+			System.out.println("5:-View FIR report");
+			System.out.println("6:-View All criminal list");
+			System.out.println("7:-Add feedback");
+			System.out.println("8:-LogOut");
+			int op3 = sc.nextInt();
+			UserDAO udao = new UserImp();
+			AdminDAO adao = new AdminImp();
+			if (op3 == 1) {
+// **************************************************************************************Add Complaint(FIR) Report*********************************************************
+				System.out.println("enter user ID");
+				int userID = sc.nextInt();
+				System.out.println("enter Name of informant");
+				String NameI = sc.next();
+				System.out.println("enter Details of suspect");
+				String DetailsS = sc.next();
+				System.out.println("enetr Description of crime");
+				String Description = sc.next();
+				System.out.println("enetr crime Date");
+				String date = sc.next();
+
+				CrimeReport cr = new CrimeReport();
+				cr.setUserId(userID);
+				cr.setNameOfInforment(NameI);
+				cr.setDetailsofsuspect(DetailsS);
+				cr.setDescription(Description);
+				cr.setDate(date);
+				try {
+					String result = udao.Crimereport(cr);
+					System.out.println(result);
+
+				} catch (UserException e) {
+					// TODO: handle exception
+					System.out.println(e.getMessage());
+				}
+			} else
+// ****************************************************************Edit Complaint*********************************************************************
+			if (op3 == 2) {
+				System.out.println("enter your userId");
+				int uID = sc.nextInt();
+				System.out.println("enter complane Number");
+				int cno = sc.nextInt();
+				System.out.println("enter new Details of suspect");
+				String DetailsS = sc.next();
+				System.out.println("enetr new Description of crime");
+				String Description = sc.next();
+				try {
+					String result = udao.EditReport(uID, cno, DetailsS, Description);
+					System.out.println(result);
+
+				} catch (UserException e) {
+					// TODO: the  handle exception
+					System.out.println(e.getMessage());
+				}
+
+			} else
+// ****************************Edit Account************************************
+			if (op3 == 3) {
+				System.out.println("enter your userID");
+				int userID = sc.nextInt();
+				System.out.println("enter new passwerd");
+				String pw = sc.next();
+				try {
+					String result = udao.changePasword(userID, pw);
+					System.out.println(result);
+
+				} catch (UserException e) {
+					// TODO: handle exception
+					System.out.println(e.getMessage());
+				}
+			} else
+// ********************************View complaint status*****************************
+			if (op3 == 4) {
+				System.out.println("enter complane number");
+				int cn = sc.nextInt();
+				try {
+					CrimeReport cr = udao.Status(cn);
+
+					System.out.println("Your complane status is " + cr.getStatus());
+
+				} catch (UserException e) {
+					System.out.println(e.getMessage());
+				}
+
+			} else if (op3 == 5) {
+// ********************************************************************View FIR report*****************************************************************
+				System.out.println("enetr the FIR number");
+				int FN = sc.nextInt();
+				try {
+					FIR firs = adao.ViewFIR(FN);
+					System.out.println(firs);
+				} catch (AdminException e) {
+				 	// TODO: handle exception
+					System.out.println(e.getMessage());
+				}
+
+			} else
+// ****************************************************************************View All criminal list*****************************************************************
+			if (op3 == 6) {
+				try {
+					List<Criminal> cr = udao.viewCriminals();
+					cr.forEach(s -> System.out.println(s));
+
+				} catch (UserException e) {
+					System.out.println(e.getMessage());
+				}
+			} else
+// *********************************************************Add Feedback**********************************************************************************
+			if (op3 == 7) {
+				System.out.println("enetr your name");
+				String name = sc.next();
+				System.out.println("enetr your email");
+				String email = sc.next();
+				System.out.println("enete your message");
+				String msg = sc.next();
+				try {
+					Feedback fb = new Feedback(name, email, msg);
+					String r = udao.AddFeedBack(fb);
+					System.out.println(r);
+				} catch (UserException e) {
+ 					// TODO: handle exception
+					System.out.println(e.getMessage());
+				}
+			} else
+// *****************************************************************logOut***************************************************************************
+			if (op3 == 8) {
+				
+				
+				flagend=true;
+				flaguser=false;
+			}
+			
+		}
+		
+//*******************************************************************Admin worke*********************************************************************
+		while (flagAdmin == true) {
+			System.out.println("Select one opption from given below");
+			System.out.println("1:-view Complaints");
+			System.out.println("2:-Edit Complaint status");
+			System.out.println("3:-Edit Account");
+			System.out.println("4:-View user feedback");
+			System.out.println("5:-Delete user feedback");
+			System.out.println("6:-Add Criminal");
+			System.out.println("7:-View Criminal list");
+			System.out.println("8:-Delete Criminal from Criminal list");
+
+			System.out.println("9:-Add FIR Complains");
+			System.out.println("10:-View FIR Complains");
+			System.out.println("11:-Delete FIR Complains");
+			System.out.println("12:-LogOut");
+			int op4 = sc.nextInt();
+			AdminDAO adao = new AdminImp();
+			UserDAO udao = new UserImp();
+			if (op4 == 1) {
+// ************************************************************************View Complains*****************************************************************************
+				System.out.println("enetr the complane number");
+				int CN = sc.nextInt();
+				try {
+					CrimeReport cr = adao.ViewComplanes(CN);
+					System.out.println(cr);
+				} catch (AdminException e) {
+					// TODO: handle exception
+					System.out.println(e.getMessage());
+				}
+			} else if (op4 == 2) {
+// *********************************************************************Edit Complane Status*****************************************************************
+				System.out.println("eneter complane number");
+				int cn = sc.nextInt();
+				System.out.println("enter Status");
+				String status = sc.next();
+				try {
+					String result = adao.EditComplaneStatust(cn, status);
+					System.out.println(result);
+
+				} catch (AdminException e) {
+					// TODO: handle exception
+					System.out.println(e.getMessage());
+				}
+			} else
+// **********************************************************************Password Change********************************************************************
+			if (op4 == 3) {
+				System.out.println("enter your AdminID");
+				int userID = sc.nextInt();
+				System.out.println("enter new passwerd");
+				String pw = sc.next();
+				try {
+					String result = adao.PasswordChange(userID, pw);
+					System.out.println(result);
+				} catch (AdminException e) {
+					System.out.println(e.getMessage());
+					// TODO: handle exception
+				}
+
+			} else
+// ********************************************************************View User Feedback**********************************************************************
+			if (op4 == 4) {
+
+				try {
+					List<Feedback> feedback = adao.ViewUserFeedback();
+					feedback.forEach(s -> System.out.println(s));
+
+				} catch (AdminException e) {
+					System.out.println(e.getMessage());
+				}
+
+			} else
+// **************************************************************Delete Feedback****************************************************************************
+			if (op4 == 5) {
+				System.out.println("enter user name");
+				String name = sc.next();
+				try {
+					String result = adao.DeletFeedback(name);
+					System.out.println(result);
+				} catch (AdminException e) {
+					// TODO: handle exception
+					System.out.println(e.getMessage());
+				}
+			} else
+// ****************************************************************Add Criminals*************************************************************************
+			if (op4 == 6) {
+				System.out.println("enter criminal number");
+				int cn = sc.nextInt();
+				System.out.println("enter name");
+				String name = sc.next();
+				System.out.println("enter nick name");
+				String Nname = sc.next();
+				System.out.println("enter Age");
+				int age = sc.nextInt();
+				System.out.println("enter Occupation");
+				String ocp = sc.next();
+				System.out.println("enter Crimetype");
+				String Crimetype = sc.next();
+				System.out.println("enter Address");
+				String Address = sc.next();
+				System.out.println("enter MostWantedType");
+				String MWT = sc.next();
+				try {
+					Criminal cm = new Criminal(cn, name, Nname, age, ocp, Crimetype, Address, MWT);
+					String result = adao.AddCriminals(cm);
+					System.out.println(result);
+
+				} catch (AdminException e) {
+					// TODO: handle exception
+					System.out.println(e.getMessage());
+				}
+			} else
+// ********************************************************************View Criminals*************************************************************************
+			if (op4 == 7) {
+
+				try {
+					List<Criminal> cr = udao.viewCriminals();
+					cr.forEach(s -> System.out.println(s));
+
+				} catch (UserException e) {
+					System.out.println(e.getMessage());
+				}
+			} else
+// *******************************************************************delete Criminals*********************************************************************
+			if (op4 == 8) {
+				System.out.println("enter criminal name");
+				String name = sc.next();
+				try {
+					String result = adao.deleteCriminals(name);
+					System.out.println(result);
+				} catch (AdminException e) {
+					// the DO: handle exception
+					System.out.println(e.getMessage());
+				}
+			} else
+// **************************************************************************Add FIR*********************************************************************
+			if (op4 == 9) {
+				System.out.println("enter District");
+				String dis = sc.next();
+				System.out.println("enter Date");
+				String date = sc.next();
+				System.out.println("enter Time");
+				String time = sc.next();
+				System.out.println("enter Type of information");
+				String info = sc.next();
+				System.out.println("enter Place of occurence");
+				String po = sc.next();
+				System.out.println("enter Act");
+				String act = sc.next();
+				System.out.println("enter Firno");
+				int firno = sc.nextInt();
+				System.out.println("enter Section");
+				String sec = sc.next();
+				System.out.println("enter Passportno");
+				String PN = sc.next();
+				System.out.println("enter Complaintno");
+				int Cno = sc.nextInt();
+				System.out.println("enter Police name");
+				String Pname = sc.next();
+				System.out.println("enter Received time");
+				String RT = sc.next();
+				System.out.println("enter Informationrec");
+				String infoR = sc.next();
+				try {
+					FIR fir = new FIR(dis, date, time, info, po, act, firno, sec, PN, Cno, Pname, RT, infoR);
+					String result = adao.AddFIR(fir);
+				} catch (AdminException e) {
+					System.out.println(e.getMessage());
+					// TODO: hanthe dle exception
+				}
+
+			} else
+// ***************************************************************View FIR*************************************************************
+			if (op4 == 10) {
+				System.out.println("enetr the FIR number");
+				int FN = sc.nextInt();
+				try {
+					FIR firs = adao.ViewFIR(FN);
+					System.out.println(firs);
+				} catch (AdminException e) {
+					// TODO: handle the exception
+					System.out.println(e.getMessage());
+				}
+			} else
+// *****************************************************Delete FIR*********************************************************************************
+			if (op4 == 11) {
+				System.out.println("enter FIT number");
+				int fir = sc.nextInt();
+				try {
+					String result = adao.DeleteFIR(fir);
+					System.out.println(result);
+				} catch (Exception e) {
+					// TODO: handle the exception
+					System.out.println(e.getMessage());
+				}
+			} else
+// ********************************************************************LogOut***************************************************************************
+			if (op4 == 12) {
+				flagAdmin = false;
+				flag = true;
+			}
+
+		}
+		while(flagend==true) {
+			flag=true;
+		}
+		sc.close();
+	}
+//*****************************************************************************The End******************************************************************
+}
